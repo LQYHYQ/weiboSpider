@@ -8,11 +8,12 @@ logger = logging.getLogger('spider.index_parser')
 
 
 class IndexParser(Parser):
-    def __init__(self, cookie, user_uri):
+    def __init__(self, cookie, user_uri, pushplus_token):
         self.cookie = cookie
         self.user_uri = user_uri
         self.url = 'https://weibo.cn/%s/profile' % (user_uri)
         self.selector = handle_html(self.cookie, self.url)
+        self.pushplus_token = pushplus_token
 
     def _get_user_id(self):
         """获取用户id，使用者输入的user_id不一定是正确的，可能是个性域名等，需要获取真正的user_id"""
@@ -32,7 +33,8 @@ class IndexParser(Parser):
         try:
             user_id = self._get_user_id()
             self.user = InfoParser(self.cookie,
-                                   user_id).extract_user_info()  # 获取用户信息
+                                   user_id,
+                                   self.pushplus_token).extract_user_info()  # 获取用户信息
             self.user.id = user_id
 
             user_info = self.selector.xpath("//div[@class='tip2']/*/text()")
