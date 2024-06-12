@@ -22,7 +22,7 @@ class InfoParser(Parser):
             user = User()
             nickname = self.selector.xpath('//title/text()')[0]
             nickname = nickname[:-3]
-            if nickname == u'登录 - 新' or nickname == u'新浪':
+            if nickname == u'登录 - 新' or nickname == u'新浪' or nickname == u'登录 -':
                 logger.warning(u'cookie错误或已过期,请按照README中方法重新获取')
                 pushplus(u"cookie错误或已过期,请按照README中方法重新获取", self.pushplus_token)
                 sys.exit()

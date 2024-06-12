@@ -6,6 +6,9 @@
 
 import requests
 import json
+import logging
+
+logger = logging.getLogger('spider.pushplus')
 
 
 # 使用pushplus服务推送
@@ -23,5 +26,8 @@ def pushplus(content, pushplus_token):
         "template": "json"
     }
     body = json.dumps(data).encode(encoding='utf-8')
-    requests.post(api_url, headers=headers, data=body)
+    try:
+        requests.post(api_url, headers=headers, data=body)
+    except Exception as e:
+        logger.exception(e)
 
