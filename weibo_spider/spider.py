@@ -69,7 +69,6 @@ class Spider:
         self.result_dir_name = config.get(
             'result_dir_name', 0)  # 结果目录名，取值为0或1，决定结果文件存储在用户昵称文件夹里还是用户id文件夹里
         self.cookie = config['cookie']
-        self.pushplus_token = config['pushplus_token']
         self.mysql_config = config.get('mysql_config')  # MySQL数据库连接配置，可以不填
 
         self.sqlite_config = config.get('sqlite_config')
@@ -141,7 +140,7 @@ class Spider:
 
     def get_user_info(self, user_uri):
         """获取用户信息"""
-        self.user = IndexParser(self.cookie, user_uri, self.pushplus_token).get_user()
+        self.user = IndexParser(self.cookie, user_uri).get_user()
         self.page_count += 1
 
     def download_user_avatar(self, user_uri):
@@ -163,8 +162,7 @@ class Spider:
             if since_date <= now:
                 page_num = IndexParser(
                     self.cookie,
-                    self.user_config['user_uri'],
-                    self.pushplus_token).get_page_num()  # 获取微博总页数
+                    self.user_config['user_uri']).get_page_num()  # 获取微博总页数
                 self.page_count += 1
                 if self.page_count > 2 and (self.page_count +
                                             page_num) > self.global_wait[0][0]:

@@ -12,7 +12,6 @@
 	"file_download_timeout": [5, 5, 10],
 	"result_dir_name": 0,
     "cookie": "your cookie",
-    "pushplus_token": "your pushplus token",
     "mysql_config": {
         "host": "localhost",
         "port": 3306,

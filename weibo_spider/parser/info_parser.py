@@ -4,17 +4,16 @@ import sys
 from ..user import User
 from .parser import Parser
 from .util import handle_html
-from .pushplus import pushplus
+from .youpush import WXPusher
 
 logger = logging.getLogger('spider.info_parser')
 
 
 class InfoParser(Parser):
-    def __init__(self, cookie, user_id, pushplus_token):
+    def __init__(self, cookie, user_id):
         self.cookie = cookie
         self.url = 'https://weibo.cn/%s/info' % (user_id)
         self.selector = handle_html(self.cookie, self.url)
-        self.pushplus_token = pushplus_token
 
     def extract_user_info(self):
         """提取用户信息"""
@@ -24,7 +23,7 @@ class InfoParser(Parser):
             nickname = nickname[:-3]
             if nickname == u'登录 - 新' or nickname == u'新浪' or nickname == u'登录 -':
                 logger.warning(u'cookie错误或已过期,请按照README中方法重新获取')
-                pushplus(u"cookie错误或已过期,请按照README中方法重新获取", self.pushplus_token)
+                WXPusher(msgtype='textcard', title="微博爬虫", msg="cookie错误或已过期,请按照README中方法重新获取！").send_message()
                 sys.exit()
             user.nickname = nickname
 
